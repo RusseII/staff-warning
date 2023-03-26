@@ -20,15 +20,16 @@ import net.runelite.client.config.RuneLiteConfig;
 import java.awt.Color;
 import java.awt.Rectangle;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.client.ui.ClientUI;
 
 @Slf4j
 @PluginDescriptor(name = "Example")
-public class ExamplePlugin extends Plugin {
+public class AutocastWarning extends Plugin {
 	@Inject
 	private Client client;
 
 	@Inject
-	private ExampleConfig config;
+	private AutocastWarningConfig config;
 
 	@Inject
 	private Notifier notifier;
@@ -50,41 +51,38 @@ public class ExamplePlugin extends Plugin {
 		log.info("Example stopped!");
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged) {
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example2 says " + config.greeting(), null);
-		}
-	}
-
 	@Provides
-	ExampleConfig provideConfig(ConfigManager configManager) {
-		return configManager.getConfig(ExampleConfig.class);
+	AutocastWarningConfig provideConfig(ConfigManager configManager) {
+		return configManager.getConfig(AutocastWarningConfig.class);
 	}
 
-	@Subscribe
-	public void onStatChanged(StatChanged statChanged) {
-		Skill skill = statChanged.getSkill();
+	// @Subscribe
+	// public void onStatChanged(StatChanged statChanged) {
+	// Skill skill = statChanged.getSkill();
 
-		if (!skill.equals(Skill.MAGIC)) {
-			return;
-		}
+	// if (!skill.equals(Skill.MAGIC)) {
+	// return;
+	// }
 
-		int level = client.getBoostedSkillLevel(skill);
-		if (level < 92) {
-			// notifier.notify("test");
-			MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+	// int level = client.getBoostedSkillLevel(skill);
+	// if (level < 92) {
+	// notifier.notify("can't autocast mage");
+	// // MainBufferProvider bufferProvider = (MainBufferProvider)
+	// // client.getBufferProvider();
 
-			Graphics2D graphics2d = (Graphics2D) bufferProvider.getImage().getGraphics();
+	// // Graphics2D graphics2d = (Graphics2D)
+	// bufferProvider.getImage().getGraphics();
 
-			// notifier.processFlash(graphics2d);
-			// final Color color = graphics2d.getColor();
-			graphics2d.setColor(runeLiteConfig.notificationFlashColor());
-			graphics2d.fill(new Rectangle(client.getCanvas().getSize()));
-			// graphics2d.setColor(color);
-		}
-		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example6 says " + level, null);
+	// // // notifier.processFlash(graphics2d);
+	// // // log.debug("testing");
+	// // final Color color = graphics2d.getColor();
+	// // graphics2d.setColor(Color.ORANGE);
+	// // graphics2d.fill(new Rectangle(client.getCanvas().getSize()));
+	// // graphics2d.setColor(color);
+	// // clientUi.paintOverlays(graphics2d);
 
-	}
+	// }
+
+	// }
 
 }
